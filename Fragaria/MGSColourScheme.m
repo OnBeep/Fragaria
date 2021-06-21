@@ -138,6 +138,14 @@ static NSString * const KMGSColourSchemeExt = @"plist";
     return [[self alloc] initWithDictionary:[self defaultValuesForAppearance:appearance]];
 }
 
++ (instancetype)dynamicColorBuiltinColourScheme
+{
+	if (@available(macOS 10.13, *)) {
+		return [[self alloc] initWithDictionary:[self defaultValuesForDynamicColor]];
+	} else {
+		return [self defaultColorSchemeForAppearance:[NSAppearance currentAppearance]];
+	}
+}
 
 + (NSArray <MGSColourScheme *> *)builtinColourSchemes
 {
@@ -236,6 +244,60 @@ static NSString * const KMGSColourSchemeExt = @"plist";
             MGSSyntaxGroupString       : [NSColor colorWithCalibratedRed:1.0f green:0.172549f blue:0.219608f alpha:1.0],
             MGSSyntaxGroupVariable     : [NSColor colorWithCalibratedRed:0.73f green:0.0f blue:0.74f alpha:1.0]};
     }
+    
+    [common addEntriesFromDictionary:colors];
+    NSMutableDictionary *groups = [NSMutableDictionary dictionary];
+    for (NSString *group in commonEnabled) {
+        NSDictionary *options = @{
+            MGSColourSchemeGroupOptionKeyEnabled: commonEnabled[group],
+            MGSColourSchemeGroupOptionKeyColour:  groupColors[group]};
+        [groups setObject:options forKey:group];
+    }
+    [common setObject:groups forKey:MGSColourSchemeKeySyntaxGroupOptions];
+    return [common copy];
+}
+
+
+// private
++ (NSDictionary *)defaultValuesForDynamicColor API_AVAILABLE(macosx(10.13))
+{
+    NSString *dispName = NSLocalizedStringFromTableInBundle(
+            @"Custom Settings", nil, [NSBundle bundleForClass:[self class]],
+            @"Name for Custom Settings scheme.");
+    NSMutableDictionary *common = [@{
+            MGSColourSchemeKeyDisplayName                        : dispName,
+            MGSColourSchemeKeySelectionBackgroundColor           : [NSColor selectedTextBackgroundColor],
+            MGSColourSchemeKeyGutterTextColor                    : [NSColor disabledControlTextColor],
+            MGSColourSchemeKeyGutterBackgroundColor              : [NSColor controlBackgroundColor]}
+        mutableCopy];
+    NSDictionary *commonEnabled = @{
+        MGSSyntaxGroupAttribute     : @YES,
+        MGSSyntaxGroupAutoComplete  : @NO,
+        MGSSyntaxGroupCommand       : @YES,
+        MGSSyntaxGroupComment       : @YES,
+        MGSSyntaxGroupInstruction   : @YES,
+        MGSSyntaxGroupKeyword       : @YES,
+        MGSSyntaxGroupNumber        : @YES,
+        MGSSyntaxGroupString        : @YES,
+        MGSSyntaxGroupVariable      : @YES};
+        
+	NSDictionary *colors = @{
+		MGSColourSchemeKeyDefaultErrorHighlightingColor : [NSColor colorNamed:@"DefaultErrorHighlighting" bundle:[NSBundle bundleForClass:self]],
+		MGSColourSchemeKeyTextInvisibleCharactersColour : [NSColor colorNamed:@"TextInvisibleCharacters" bundle:[NSBundle bundleForClass:self]],
+		MGSColourSchemeKeyTextColor                     : [NSColor textColor],
+		MGSColourSchemeKeyBackgroundColor               : [NSColor textBackgroundColor],
+		MGSColourSchemeKeyInsertionPointColor           : [NSColor textColor],
+		MGSColourSchemeKeyCurrentLineHighlightColour    : [NSColor colorNamed:@"KeyCurrentLineHighlight" bundle:[NSBundle bundleForClass:self]]};
+	NSDictionary *groupColors = @{
+		MGSSyntaxGroupAutoComplete : [NSColor colorNamed:@"AutoComplete" bundle:[NSBundle bundleForClass:self]],
+		MGSSyntaxGroupAttribute    : [NSColor colorNamed:@"Attribute" bundle:[NSBundle bundleForClass:self]],
+		MGSSyntaxGroupCommand      : [NSColor colorNamed:@"Command" bundle:[NSBundle bundleForClass:self]],
+		MGSSyntaxGroupComment      : [NSColor colorNamed:@"Comment" bundle:[NSBundle bundleForClass:self]],
+		MGSSyntaxGroupInstruction  : [NSColor colorNamed:@"Instruction" bundle:[NSBundle bundleForClass:self]],
+		MGSSyntaxGroupKeyword      : [NSColor colorNamed:@"Keyword" bundle:[NSBundle bundleForClass:self]],
+		MGSSyntaxGroupNumber       : [NSColor colorNamed:@"Number" bundle:[NSBundle bundleForClass:self]],
+		MGSSyntaxGroupString       : [NSColor colorNamed:@"String" bundle:[NSBundle bundleForClass:self]],
+		MGSSyntaxGroupVariable     : [NSColor colorNamed:@"Variable" bundle:[NSBundle bundleForClass:self]]};
     
     [common addEntriesFromDictionary:colors];
     NSMutableDictionary *groups = [NSMutableDictionary dictionary];

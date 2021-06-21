@@ -89,6 +89,8 @@ extern MGSColourSchemeGroupOptionKey MGSColourSchemeGroupOptionKeyFontVariant;
  * @param appearance The appearance appropriate for the returned scheme */
 + (instancetype)defaultColorSchemeForAppearance:(NSAppearance *)appearance;
 
+/** Returns a colour scheme instance with colours that switch dynamically from dark to white mode. */
++ (instancetype)dynamicColorBuiltinColourScheme;
 
 #pragma mark - Saving Colour Schemes
 /// @name Saving Loading Colour Schemes
