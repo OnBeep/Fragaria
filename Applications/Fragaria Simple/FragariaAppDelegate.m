@@ -61,6 +61,10 @@
     // specify a breakpoint delegate
     breakptDelegate = [[MGSSimpleBreakpointDelegate alloc] init];
     fragaria.breakpointDelegate = breakptDelegate;
+    
+    // Use a color scheme with dynamic colors to support light/dark transition.
+    // When using FragariaDefaultsCoordinator, this is not required.
+    fragaria.colourScheme = [MGSColourScheme dynamicColorBuiltinColourScheme];
 }
 
 
