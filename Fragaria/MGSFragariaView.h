@@ -274,6 +274,8 @@ IB_DESIGNABLE
 /** Specifies whether or not matching braces are shown in the editor.*/
 @property (nonatomic, assign) BOOL showsMatchingBraces;
 
+/** Specifies whether or not to beep when an expected matching brace is not found */
+@property (nonatomic, assign) BOOL beepOnMissingBrace;
 
 #pragma mark - Page Guide and Line Wrap
 /// @name Showing the Page Guide

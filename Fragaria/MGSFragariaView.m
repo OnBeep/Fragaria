@@ -662,6 +662,18 @@
     return self.textView.showsMatchingBraces;
 }
 
+/*
+ * @property beepOnMissingBrace
+ */
+- (void)setBeepOnMissingBrace:(BOOL)beepsOnMissingBrace
+{
+    self.textView.beepOnMissingBrace = beepsOnMissingBrace;
+    [self mgs_propagateValue:@(beepsOnMissingBrace) forBinding:NSStringFromSelector(@selector(beepOnMissingBrace))];
+}
+
+- (BOOL)beepOnMissingBrace {
+    return self.textView.beepOnMissingBrace;
+}
 
 #pragma mark - Page Guide and Line Wrap
 

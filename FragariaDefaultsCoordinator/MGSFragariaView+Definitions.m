@@ -54,6 +54,7 @@ NSString * const MGSFragariaDefaultsIndentNewLinesAutomatically = @"indentNewLin
 NSString * const MGSFragariaDefaultsInsertClosingBraceAutomatically =       @"insertClosingBraceAutomatically";
 NSString * const MGSFragariaDefaultsInsertClosingParenthesisAutomatically = @"insertClosingParenthesisAutomatically";
 NSString * const MGSFragariaDefaultsShowsMatchingBraces =                   @"showsMatchingBraces";
+NSString * const MGSFragariaDefaultsBeepOnMissingBrace =                    @"beepOnMissingBrace";
 
 // Page Guide and Line Wrap
 NSString * const MGSFragariaDefaultsPageGuideColumn =      @"pageGuideColumn";
@@ -131,6 +132,7 @@ NSString * const MGSFragariaDefaultsUseSystemSelectionColor = @"useSystemSelecti
             MGSFragariaDefaultsInsertClosingBraceAutomatically : @NO,
             MGSFragariaDefaultsInsertClosingParenthesisAutomatically : @NO,
             MGSFragariaDefaultsShowsMatchingBraces : @YES,
+            MGSFragariaDefaultsBeepOnMissingBrace : @YES,
             
             MGSFragariaDefaultsPageGuideColumn : @80,
             MGSFragariaDefaultsShowsPageGuide : @NO,
@@ -198,6 +200,7 @@ NSString * const MGSFragariaDefaultsUseSystemSelectionColor = @"useSystemSelecti
                 MGSFragariaDefaultsInsertClosingBraceAutomatically : @NO,
                 MGSFragariaDefaultsInsertClosingParenthesisAutomatically : @NO,
                 MGSFragariaDefaultsShowsMatchingBraces : @YES,
+                MGSFragariaDefaultsBeepOnMissingBrace : @YES,
                 
                 MGSFragariaDefaultsPageGuideColumn : @80,
                 MGSFragariaDefaultsShowsPageGuide : @NO,
@@ -285,6 +288,7 @@ NSString * const MGSFragariaDefaultsUseSystemSelectionColor = @"useSystemSelecti
 		MGSFragariaDefaultsShowsPageGuide, MGSFragariaDefaultsLineWrap,
 		MGSFragariaDefaultsLineWrapsAtPageGuide, MGSFragariaDefaultsShowsInvisibleCharacters,
 		MGSFragariaDefaultsLineHeightMultiple, MGSFragariaDefaultsShowsMatchingBraces,
+        MGSFragariaDefaultsBeepOnMissingBrace,
 	]];
 }
 

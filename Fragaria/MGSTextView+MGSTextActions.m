@@ -435,7 +435,8 @@
     }
     
     if (!foundClosingBrace) {
-        NSBeep();
+        if (self.beepOnMissingBrace)
+            NSBeep();
         return;
     }
     
@@ -527,7 +528,8 @@
     }
     
     if (foundOpeningBrace == NO) {
-        NSBeep();
+        if (self.beepOnMissingBrace)
+            NSBeep();
         return;
     }
     

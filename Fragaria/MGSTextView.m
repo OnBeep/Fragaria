@@ -448,6 +448,7 @@ static unichar ClosingBraceForOpeningBrace(unichar c)
     self.textFont = [NSFont fontWithName:@"Menlo" size:11];
     self.indentNewLinesAutomatically = YES;
     self.showsMatchingBraces = YES;
+    self.beepOnMissingBrace = YES;
     self.useTabStops = YES;
     self.indentBracesAutomatically = YES;
     
@@ -1048,7 +1049,7 @@ static unichar ClosingBraceForOpeningBrace(unichar c)
                                     openedByCharacter:matchingBrace closedByCharacter:characterToCheck];
     if (cursorLocation != NSNotFound)
         [self showFindIndicatorForRange:NSMakeRange(cursorLocation, 1)];
-    else
+    else if (self.beepOnMissingBrace)
         NSBeep();
 }
 
@@ -1178,13 +1179,15 @@ static unichar ClosingBraceForOpeningBrace(unichar c)
             location = [self findBeginningOfNestedBlock:location openedByCharacter:matchingBrace closedByCharacter:characterToCheck];
             if (location != NSNotFound)
                 return NSMakeRange(location, originalLocation - location + 1);
-            NSBeep();
+            if (self.beepOnMissingBrace)
+                NSBeep();
         } else {
             matchingBrace = ClosingBraceForOpeningBrace(characterToCheck);
             location = [self findEndOfNestedBlock:location openedByCharacter:characterToCheck closedByCharacter:matchingBrace];
             if (location != NSNotFound)
                 return NSMakeRange(originalLocation, location - originalLocation + 1);
-            NSBeep();
+            if (self.beepOnMissingBrace)
+                NSBeep();
         }
     }
 

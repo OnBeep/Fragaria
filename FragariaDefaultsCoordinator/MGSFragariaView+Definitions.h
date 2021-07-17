@@ -69,6 +69,7 @@ extern NSString * const MGSFragariaDefaultsIndentNewLinesAutomatically;         
 extern NSString * const MGSFragariaDefaultsInsertClosingBraceAutomatically;       // BOOL   insertClosingBraceAutomatically
 extern NSString * const MGSFragariaDefaultsInsertClosingParenthesisAutomatically; // BOOL   insertClosingParenthesisAutomatically
 extern NSString * const MGSFragariaDefaultsShowsMatchingBraces;                   // BOOL   showsMatchingBraces
+extern NSString * const MGSFragariaDefaultsBeepOnMissingBrace;                    // BOOL   beepOnMissingBrace
 
 // Page Guide and Line Wrap
 extern NSString * const MGSFragariaDefaultsPageGuideColumn;                       // NSInteger  pageGuideColumn
