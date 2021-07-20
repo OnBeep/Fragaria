@@ -630,6 +630,7 @@
 		E3D4B2771714D89700BB2CC6 /* MGSSyntaxError.h in Headers */ = {isa = PBXBuildFile; fileRef = E3D4B2751714D89700BB2CC6 /* MGSSyntaxError.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E3D4B2781714D89700BB2CC6 /* MGSSyntaxError.m in Sources */ = {isa = PBXBuildFile; fileRef = E3D4B2761714D89700BB2CC6 /* MGSSyntaxError.m */; };
 		F4592CC221AB89100042F2AD /* apex.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4592CC121AB89100042F2AD /* apex.plist */; };
+		F470D91626A632DC0037C9AE /* MGSTextViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F470D91526A632DC0037C9AE /* MGSTextViewTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1595,6 +1596,7 @@
 		E3D4B2751714D89700BB2CC6 /* MGSSyntaxError.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MGSSyntaxError.h; sourceTree = "<group>"; tabWidth = 4; };
 		E3D4B2761714D89700BB2CC6 /* MGSSyntaxError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSSyntaxError.m; sourceTree = "<group>"; };
 		F4592CC121AB89100042F2AD /* apex.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = apex.plist; sourceTree = "<group>"; };
+		F470D91526A632DC0037C9AE /* MGSTextViewTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MGSTextViewTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2240,6 +2242,7 @@
 				0150B38321861B7F00CBA228 /* MGSAttributeOverlayTextStorageTest.m */,
 				0189E269227E342A004CF9D4 /* MGSSyntaxControllerTests.m */,
 				D0E5210F1A90E34F005CB80B /* Supporting Files */,
+				F470D91526A632DC0037C9AE /* MGSTextViewTests.m */,
 			);
 			path = FragariaTests;
 			sourceTree = "<group>";
@@ -2856,6 +2859,7 @@
 				0189E26A227E342A004CF9D4 /* MGSSyntaxControllerTests.m in Sources */,
 				D0E5211A1A90E399005CB80B /* MGSSyntaxErrorControllerTests.m in Sources */,
 				D0718BAE1AB721280073493A /* MGSColourSchemeTests.m in Sources */,
+				F470D91626A632DC0037C9AE /* MGSTextViewTests.m in Sources */,
 				019B02EF1C1F4FE20026548F /* MGSFragariaRowColumnFunctionsTests.m in Sources */,
 				D06653D51AC0159800ACE8B0 /* MGSColourToPlainTextTransformerTests.m in Sources */,
 				011B56D71C1DC7AB00540669 /* MGSLineNumberCacheTests.m in Sources */,

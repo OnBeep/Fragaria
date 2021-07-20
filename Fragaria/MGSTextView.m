@@ -34,42 +34,6 @@
 #import "MGSSyntaxParser.h"
 
 
-static BOOL CharacterIsBrace(unichar c)
-{
-    NSCharacterSet *braces = [NSCharacterSet characterSetWithCharactersInString:@"()[]{}<>"];
-    return [braces characterIsMember:c];
-}
-
-
-static BOOL CharacterIsClosingBrace(unichar c)
-{
-    NSCharacterSet *braces = [NSCharacterSet characterSetWithCharactersInString:@")]}>"];
-    return [braces characterIsMember:c];
-}
-
-
-static unichar OpeningBraceForClosingBrace(unichar c)
-{
-    switch (c) {
-        case ')': return '(';
-        case ']': return '[';
-        case '}': return '{';
-        case '>': return '<';
-    }
-    return 0;
-}
-
-
-static unichar ClosingBraceForOpeningBrace(unichar c)
-{
-    switch (c) {
-        case '(': return ')';
-        case '[': return ']';
-        case '{': return '}';
-        case '<': return '>';
-    }
-    return 0;
-}
 
 
 #pragma mark - Implementation
@@ -90,6 +54,9 @@ static unichar ClosingBraceForOpeningBrace(unichar c)
     id __weak syntaxDefOfCachedKeywords;
     
     BOOL insertionPointMovementIsPending;
+    
+    NSCharacterSet *braceChars;
+    NSDictionary *closingBraceToOpenBrace;
 }
 
 
@@ -436,6 +403,7 @@ static unichar ClosingBraceForOpeningBrace(unichar c)
     [self setAutomaticLinkDetectionEnabled:YES];
     [self setContinuousSpellCheckingEnabled:NO];
     [self setGrammarCheckingEnabled:NO];
+    [self setBraces:@{@'{':@'}',@'[':@']',@'(':@')',@'<':@'>'}];
 
     _lineWrap = YES;
     [self updateLineWrap];
@@ -455,6 +423,41 @@ static unichar ClosingBraceForOpeningBrace(unichar c)
     [self configurePageGuide];
 }
 
+-(void)setBraces:(NSDictionary *)braces
+{
+    _braces = braces;
+    NSMutableCharacterSet *allChars = [[NSMutableCharacterSet alloc] init];
+    NSMutableDictionary* closeToOpen = [[NSMutableDictionary alloc] initWithCapacity:[braces count]];
+    [braces enumerateKeysAndObjectsUsingBlock:^(NSNumber* _Nonnull key, NSNumber*  _Nonnull obj, BOOL * _Nonnull stop) {
+        unichar open = [key unsignedShortValue];
+        unichar close = [obj unsignedShortValue];
+        [allChars addCharactersInRange:NSMakeRange(open,1)];
+        [allChars addCharactersInRange:NSMakeRange(close,1)];;
+        closeToOpen[obj] = key;
+    }];
+    braceChars = [allChars copy];
+    closingBraceToOpenBrace = [closeToOpen copy];
+}
+
+-(BOOL)characterIsBrace:(unichar)c
+{
+    return [braceChars characterIsMember:c];
+}
+
+-(BOOL)characterIsClosingBrace:(unichar)c
+{
+    return closingBraceToOpenBrace[@(c)] != nil;
+}
+
+-(unichar)openingBraceForClosingBrace:(unichar)c
+{
+    return [closingBraceToOpenBrace[@(c)] unsignedShortValue];
+}
+
+-(unichar)closingBraceForOpeningBrace:(unichar)c
+{
+    return [_braces[@(c)] unsignedShortValue];
+}
 
 #pragma mark - Menu Item Validation
 
@@ -957,7 +960,7 @@ static unichar ClosingBraceForOpeningBrace(unichar c)
     }
 
     if ([aString length] == 1 && self.showsMatchingBraces) {
-        if (CharacterIsClosingBrace([aString characterAtIndex:0])) {
+        if ([self characterIsClosingBrace:[aString characterAtIndex:0]]) {
             [self showBraceMatchingBrace:[aString characterAtIndex:0]];
         }
     }
@@ -1040,7 +1043,7 @@ static unichar ClosingBraceForOpeningBrace(unichar c)
     NSInteger cursorLocation;
     unichar matchingBrace;
 
-    matchingBrace = OpeningBraceForClosingBrace(characterToCheck);
+    matchingBrace = [self openingBraceForClosingBrace:characterToCheck];
 
     cursorLocation = [self selectedRange].location - 1;
     if (cursorLocation < 0) return;
@@ -1172,17 +1175,17 @@ static unichar ClosingBraceForOpeningBrace(unichar c)
     BOOL triedToMatchBrace = NO;
     unichar matchingBrace;
 
-    if (CharacterIsBrace(characterToCheck)) {
+    if ([self characterIsBrace:characterToCheck]) {
         triedToMatchBrace = YES;
-        if (CharacterIsClosingBrace(characterToCheck)) {
-            matchingBrace = OpeningBraceForClosingBrace(characterToCheck);
+        if ([self characterIsClosingBrace:characterToCheck]) {
+            matchingBrace = [self openingBraceForClosingBrace:characterToCheck];
             location = [self findBeginningOfNestedBlock:location openedByCharacter:matchingBrace closedByCharacter:characterToCheck];
             if (location != NSNotFound)
                 return NSMakeRange(location, originalLocation - location + 1);
             if (self.beepOnMissingBrace)
                 NSBeep();
         } else {
-            matchingBrace = ClosingBraceForOpeningBrace(characterToCheck);
+            matchingBrace = [self closingBraceForOpeningBrace:characterToCheck];
             location = [self findEndOfNestedBlock:location openedByCharacter:characterToCheck closedByCharacter:matchingBrace];
             if (location != NSNotFound)
                 return NSMakeRange(originalLocation, location - originalLocation + 1);

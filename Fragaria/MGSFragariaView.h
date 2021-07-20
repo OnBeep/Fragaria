@@ -277,6 +277,12 @@ IB_DESIGNABLE
 /** Specifies whether or not to beep when an expected matching brace is not found */
 @property (nonatomic, assign) BOOL beepOnMissingBrace;
 
+/** Specifies the pairs of characters to treat as braces.
+    The key is the opening brace character and the value is the closing brace character.
+    e.g. [x setBraces:@{ @'{' : @'}' , @'[' : @']' }]
+*/
+@property (nonatomic, retain) NSDictionary *braces;
+
 #pragma mark - Page Guide and Line Wrap
 /// @name Showing the Page Guide
 

@@ -675,6 +675,19 @@
     return self.textView.beepOnMissingBrace;
 }
 
+/*
+ @property braces
+ */
+- (void)setBraces:(NSDictionary*)braces
+{
+    self.textView.braces = braces;
+    [self mgs_propagateValue:braces forBinding:NSStringFromSelector(@selector(braces))];
+}
+
+- (NSDictionary*)braces {
+    return self.textView.braces;
+}
+
 #pragma mark - Page Guide and Line Wrap
 
 
