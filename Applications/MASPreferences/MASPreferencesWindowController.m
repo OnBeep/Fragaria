@@ -264,12 +264,13 @@ static NSString *const PreferencesKeyForViewBounds (NSString *identifier)
     [[NSUserDefaults standardUserDefaults] setObject:controller.identifier forKey:kMASPreferencesSelectedViewKey];
     
     NSView *controllerView = controller.view;
+    NSRect intrinsicViewBounds = (NSRect){NSZeroPoint, controllerView.fittingSize};
 
     // Retrieve current and minimum frame size for the view
     NSString *oldViewRectString = [[NSUserDefaults standardUserDefaults] stringForKey:PreferencesKeyForViewBounds(controller.identifier)];
     NSString *minViewRectString = [_minimumViewRects objectForKey:controller.identifier];
     if (!minViewRectString)
-        [_minimumViewRects setObject:NSStringFromRect(controllerView.bounds) forKey:controller.identifier];
+        [_minimumViewRects setObject:NSStringFromRect(intrinsicViewBounds) forKey:controller.identifier];
     
     BOOL sizableWidth = ([controller respondsToSelector:@selector(hasResizableWidth)]
                          ? controller.hasResizableWidth
@@ -278,8 +279,8 @@ static NSString *const PreferencesKeyForViewBounds (NSString *identifier)
                           ? controller.hasResizableHeight
                           : controllerView.autoresizingMask & NSViewHeightSizable);
     
-    NSRect oldViewRect = oldViewRectString ? NSRectFromString(oldViewRectString) : controllerView.bounds;
-    NSRect minViewRect = minViewRectString ? NSRectFromString(minViewRectString) : controllerView.bounds;
+    NSRect oldViewRect = oldViewRectString ? NSRectFromString(oldViewRectString) : intrinsicViewBounds;
+    NSRect minViewRect = minViewRectString ? NSRectFromString(minViewRectString) : intrinsicViewBounds;
     oldViewRect.size.width  = NSWidth(oldViewRect)  < NSWidth(minViewRect)  || !sizableWidth  ? NSWidth(minViewRect)  : NSWidth(oldViewRect);
     oldViewRect.size.height = NSHeight(oldViewRect) < NSHeight(minViewRect) || !sizableHeight ? NSHeight(minViewRect) : NSHeight(oldViewRect);
 
