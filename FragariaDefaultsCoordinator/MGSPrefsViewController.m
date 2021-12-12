@@ -98,6 +98,7 @@
 @implementation MGSPrefsViewController {
     BOOL subviewsNeedUpdate;
     NSMutableArray *separators;
+    NSView *minWidthStrut;
 }
 
 
@@ -116,6 +117,16 @@
     bundle = [NSBundle bundleForClass:[MGSPrefsViewController class]];
     [bundle loadNibNamed:@"MGSPrefsCommonViews" owner:self topLevelObjects:nil];
     
+    NSView *myView = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 500, 0)];
+    minWidthStrut = [[NSView alloc] init];
+    minWidthStrut.translatesAutoresizingMaskIntoConstraints = NO;
+    [myView addSubview:minWidthStrut];
+    [minWidthStrut addConstraints:@[
+        [NSLayoutConstraint constraintWithItem:minWidthStrut attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:500.0],
+        [NSLayoutConstraint constraintWithItem:minWidthStrut attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:0]
+    ]];
+    [self setView:myView];
+    
     _managedPropertiesProxy = [[MGSManagedPropertiesProxy alloc] initWithViewController:self];
 	_managedGlobalPropertiesProxy = [[MGSManagedGlobalPropertiesProxy alloc] initWithViewController:self];
     
@@ -126,14 +137,6 @@
     
     separators = [[NSMutableArray alloc] init];
 
-    return self;
-}
-
-
-- (instancetype)init
-{
-    self = [super init];
-    [self setView:[[NSView alloc] initWithFrame:NSMakeRect(0, 0, 500, 0)]];
     return self;
 }
 
@@ -282,6 +285,7 @@
         [sep removeFromSuperview];
     }
     [separators removeAllObjects];
+    [self recreateMinimumWidthConstraints];
 	
     allViewsKeys = [self keysForPanelSubviews];
 	for (NSString *key in allViewsKeys) {
@@ -365,6 +369,17 @@
 {
     if ([view superview])
         [view removeFromSuperviewWithoutNeedingDisplay];
+}
+
+
+- (void)recreateMinimumWidthConstraints
+{
+    NSView *myView = self.view;
+    [myView addConstraints:@[
+        [NSLayoutConstraint constraintWithItem:minWidthStrut attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:myView attribute:NSLayoutAttributeLeft multiplier:1 constant:0],
+        [NSLayoutConstraint constraintWithItem:minWidthStrut attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:myView attribute:NSLayoutAttributeRight multiplier:1 constant:0],
+        [NSLayoutConstraint constraintWithItem:minWidthStrut attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:myView attribute:NSLayoutAttributeTop multiplier:1 constant:0],
+    ]];
 }
 
 
