@@ -18,10 +18,6 @@
 
 @interface MGSFontWell : NSControl
 
-
-/** The font object for this control */
-@property (nonatomic) NSFont *font;
-
 /** Sets the value of the receiver to a font value obtained from the specified
  *  object. 
  *  @param sender The object from which to take the value. This object must

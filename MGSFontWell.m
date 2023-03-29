@@ -43,7 +43,7 @@ static NSNumberFormatter *formatter;
     if (!self) return nil;
     
     [self awakeFromNib];
-    _font = [NSFont userFontOfSize:0];
+    self.font = [NSFont userFontOfSize:0];
     
     return self;
 }
@@ -55,7 +55,7 @@ static NSNumberFormatter *formatter;
     if (!self) return nil;
     
     self.cell = [[[[self class] cellClass] alloc] initTextCell:@""];
-    _font = [NSFont userFontOfSize:0];
+    self.font = [NSFont userFontOfSize:0];
     
     return self;
 }
@@ -118,7 +118,7 @@ static NSNumberFormatter *formatter;
 
 - (id)objectValue
 {
-    return _font;
+    return self.font;
 }
 
 
@@ -134,7 +134,7 @@ static NSNumberFormatter *formatter;
     NSString *desc, *fontName, *pointSize;
     
     [self willChangeValueForKey:@"objectValue"];
-    _font = font;
+    self.font = font;
     [self didChangeValueForKey:@"objectValue"];
     
     fontName = [font fontName];
